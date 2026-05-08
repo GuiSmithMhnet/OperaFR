@@ -47,6 +47,14 @@ This project can be installed by cloning this repository on your current server 
 
   #Current server ip
   SERVER_IP="http://localhost:2111" #You can put a DNS/Domain here if you have one linked to the server
+
+  # USERS CREDENTIALS
+  SUPERUSER_EMAIL=email@gmail.com
+  SUPERUSER_USER=root
+  SUPERUSER_PASSWORD=root
+
+  # TOKEN DETAILS
+  TOKEN_DAYS_EXPIRATION=365
 ```
 You may want to change: 
 
@@ -59,7 +67,11 @@ You may want to change:
 - **VALID_SENDER_IPS**: If you want to authorize only some IP to send the files
 - **ZMQ_REPLY_PORT**: Port for Req/Reply service
 - **ZMQ_PUSH_PORT**: Port for Push/Pull service
-- **SERVER_IP**: URL of the server 
+- **SERVER_IP**: URL of the server
+- **SUPERUSER_EMAIL**: User e-mail
+- **SUPERUSER_USER**: Username
+- **SUPERUSER_PASSWORD**: User password
+- **TOKEN_DAYS_EXPIRATION**: Token Expiration days
 
 #### 4. Generate the prisma client
 ```shell
@@ -70,6 +82,34 @@ npx prisma generate
 ```shell
 npx prisma migrate dev
 ```
+
+#### 6. Create initial superuser (new script)
+
+```bash
+node scripts/login-cli.js
+```
+
+This script reads `SUPERUSER_EMAIL`, `SUPERUSER_USER`, and `SUPERUSER_PASSWORD` from `.env` and creates a superuser in the database.
+
+#### 7. Start the API
+
+```bash
+npm start
+```
+
+#### 8. Generate and persist `USER_API_KEY` (new script)
+
+With the API running:
+
+```bash
+node scripts/generate-token-cli.js
+```
+
+This script:
+- logs in using `SUPERUSER_USER` / `SUPERUSER_PASSWORD` (or `USER` / `PASSWORD`)
+- calls `/generate_token`
+- saves the returned token into `.env` as `USER_API_KEY`
+
 ## 📚 Documentation
 
 Access the current documentation [here](https://documenter.getpostman.com/view/10123907/2s9Y5WyjGL).
