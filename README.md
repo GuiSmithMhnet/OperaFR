@@ -97,18 +97,29 @@ This script reads `SUPERUSER_EMAIL`, `SUPERUSER_USER`, and `SUPERUSER_PASSWORD` 
 npm start
 ```
 
-#### 8. Generate and persist `USER_API_KEY` (new script)
+## Instalation with Docker
 
-With the API running:
+Follow the normal installation only until step 3 (including step 3).  
+After that, use the Docker flow below.
 
+#### 1. Build and start containers
 ```bash
-node scripts/generate-token-cli.js
+docker compose up -d --build
 ```
 
-This script:
-- logs in using `SUPERUSER_USER` / `SUPERUSER_PASSWORD` (or `USER` / `PASSWORD`)
-- calls `/generate_token`
-- saves the returned token into `.env` as `USER_API_KEY`
+This will start:
+- `operafr-db` (PostgreSQL)
+- `operafr-app` (API), already running `prisma migrate dev`, `create-user`, and `npm start`
+
+#### 2. Generate and persist `USER_API_KEY`
+
+After everything is up, run:
+
+```bash
+docker exec -it operafr-app node scripts/generate-token-cli.js
+```
+
+This command logs in with the configured credentials and saves `USER_API_KEY` in `.env`.
 
 ## 📚 Documentation
 
