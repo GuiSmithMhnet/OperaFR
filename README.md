@@ -86,7 +86,7 @@ npx prisma migrate dev
 #### 6. Create initial superuser (new script)
 
 ```bash
-node scripts/login-cli.js
+node scripts/create-user.js
 ```
 
 This script reads `SUPERUSER_EMAIL`, `SUPERUSER_USER`, and `SUPERUSER_PASSWORD` from `.env` and creates a superuser in the database.
