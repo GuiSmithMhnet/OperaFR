@@ -24,7 +24,14 @@ async function run() {
         }
     });
 
+    const folder = await prisma.folder.create({
+        data: {
+            name: 'default',
+        }
+    });
+
     console.log(`Superuser created with id ${user.id}`);
+    console.log(`Folder created with id ${folder.id}`);
 }
 
 run()
